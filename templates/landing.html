@@ -1,0 +1,21 @@
+<!-- templates/landing.html -->  
+{% extends 'base.html' %}  
+{% block title %}Welcome to Sakura News Network{% endblock %}  
+{% block extra_head %}  
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">  
+{% endblock %}  
+{% block content %}  
+<div class="loading-overlay" id="loading-overlay">  
+    <div class="loader"></div>  
+</div>  
+  
+<div class="landing-container">  
+    <div class="landing-content">  
+        <h1 data-lang-key="welcome-message">Welcome to Sakura News Network</h1>  
+        <p data-lang-key="tagline">Your trusted source for the latest news and insights.</p>  
+    </div>  
+</div>  
+{% endblock %}  
+{% block extra_scripts %}  
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>  
+{% endblock %}  

@@ -1,0 +1,42 @@
+<!-- templates/footer.html -->  
+<footer>  
+    <div class="container">  
+        <div class="footer-content">  
+            <!-- About Us Section -->  
+            <div class="footer-section">  
+                <h3 data-lang-key="about-us">About Us</h3>  
+                <p data-lang-key="about-desc">Sakura News is your trusted source for the latest news and in-depth analysis from around the world.</p>  
+            </div>  
+  
+            <!-- Quick Links -->  
+            <div class="footer-section">  
+                <h3 data-lang-key="quick-links">Quick Links</h3>  
+                <ul>  
+                    <li><a href="{{ url_for('index') }}" data-lang-key="home">Home</a></li>  
+                    <li><a href="{{ url_for('about') }}" data-lang-key="about">About</a></li>  
+                    <li><a href="{{ url_for('contact') }}" data-lang-key="contact">Contact</a></li>  
+                    <li><a href="{{ url_for('category_page', category_name='politics') }}" data-lang-key="politics">Politics</a></li>  
+                    <li><a href="{{ url_for('category_page', category_name='technology') }}" data-lang-key="technology">Technology</a></li>  
+                </ul>  
+            </div>  
+  
+            <!-- Contact Information -->  
+            <div class="footer-section">  
+                <h3>Contact Us</h3>  
+                <p>Email: <a href="mailto:info@sakuranewsnetwork.com">info@sakuranewsnetwork.com</a></p>  
+                <p>Phone: +977-9806746700</p>  
+                <!-- Social Media Links -->  
+                <div class="social-icons mt-3">  
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>  
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>  
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>  
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>  
+                </div>  
+            </div>  
+        </div>  
+        <!-- Footer Bottom -->  
+        <div class="footer-bottom mt-4">  
+            <p>&copy; {{ datetime.utcnow().year }} Sakura News Network - <span data-lang-key="rights-reserved">All rights reserved</span></p>  
+        </div>  
+    </div>  
+</footer>  

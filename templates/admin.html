@@ -1,0 +1,146 @@
+<!-- templates/admin.html -->  
+{% extends 'base.html' %}  
+{% block title %}Admin Panel - Sakura News Network{% endblock %}  
+{% block extra_head %}  
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">  
+{% endblock %}  
+  
+{% block content %}  
+<main class="container admin-main">  
+    <!-- Flash Messages -->  
+    {% with messages = get_flashed_messages(with_categories=true) %}  
+        {% if messages %}  
+            <ul class="flashes">  
+            {% for category, message in messages %}  
+                <li class="{{ category }}">{{ message }}</li>  
+            {% endfor %}  
+            </ul>  
+        {% endif %}  
+    {% endwith %}  
+  
+    <!-- Dashboard Navigation -->  
+    <div class="admin-dashboard">  
+        <h2>Admin Dashboard</h2>  
+        <ul class="admin-nav">  
+            <li><a href="#publish-news">Publish News</a></li>  
+            <li><a href="#breaking-news">Manage Breaking News</a></li>  
+            <li><a href="#upload-video">Upload Video</a></li>  
+            <li><a href="#messages">Messages</a></li>  
+            <li><a href="#manage-videos">Manage Videos</a></li>  
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>  
+        </ul>  
+    </div>  
+  
+    <!-- Publish News Section -->  
+    <section id="publish-news">  
+        <h2>Publish News Article</h2>  
+        <form method="post" action="{{ url_for('admin_panel') }}">  
+            <input type="hidden" name="action" value="publish_news">  
+            <input type="text" name="news-title" placeholder="News Title" required>  
+            <textarea name="news-description" placeholder="News Description" required></textarea>  
+            <input type="url" name="news-image" placeholder="Image URL" required>  
+            <select name="news-category" required>  
+                <option value="">Select Category</option>  
+                <option value="politics">Politics</option>  
+                <option value="technology">Technology</option>  
+                <option value="entertainment">Entertainment</option>  
+                <option value="business">Business</option>  
+            </select>  
+            <button type="submit">Publish News</button>  
+        </form>  
+    </section>  
+  
+    <!-- Breaking News Management -->  
+    <section id="breaking-news">  
+        <h2>Manage Breaking News</h2>  
+        <form method="post" action="{{ url_for('admin_panel') }}">  
+            <input type="hidden" name="action" value="update_breaking_news">  
+            <input type="text" name="breaking-news-text" placeholder="Breaking News Text" required>  
+            <button type="submit">Add Breaking News</button>  
+        </form>  
+        {% if breaking_news %}  
+        <ul class="breaking-news-list">  
+            {% for news in breaking_news %}  
+            <li>  
+                <span>{{ news }}</span>  
+                <a href="{{ url_for('delete_breaking_news', index=loop.index0) }}" class="delete-btn">Delete</a>  
+            </li>  
+            {% endfor %}  
+        </ul>  
+        {% else %}  
+            <p>No breaking news items yet.</p>  
+        {% endif %}  
+    </section>  
+  
+    <!-- Upload Video Section -->  
+    <section id="upload-video">  
+        <h2>Upload Video</h2>  
+        <form method="post" action="{{ url_for('admin_panel') }}" enctype="multipart/form-data">  
+            <input type="hidden" name="action" value="upload_video">  
+            <input type="file" name="video-file" accept="video/*" required>  
+            <button type="submit">Upload Video</button>  
+        </form>  
+    </section>  
+  
+    <!-- Manage Videos Section -->  
+    <section id="manage-videos">  
+        <h2>Manage Videos</h2>  
+        {% if videos %}  
+            <ul class="videos-list">  
+                {% for video in videos %}  
+                    <li>  
+                        <video width="320" height="240" controls>  
+                            <source src="{{ url_for('uploaded_file', filename=video) }}" type="video/mp4">  
+                            Your browser does not support the video tag.  
+                        </video>  
+                        <p>{{ video }}</p>  
+                        <a href="{{ url_for('delete_video', filename=video) }}" class="delete-btn">Delete</a>  
+                    </li>  
+                {% endfor %}  
+            </ul>  
+        {% else %}  
+            <p>No videos uploaded yet.</p>  
+        {% endif %}  
+    </section>  
+  
+    <!-- Messages Section -->  
+    <section id="messages">  
+        <h2>User Messages</h2>  
+        {% if messages %}  
+            <ul class="message-list">  
+                {% for message in messages %}  
+                    <li>  
+                        <h3>{{ message.name }} (<a href="mailto:{{ message.email }}">{{ message.email }}</a>)</h3>  
+                        <p>{{ message.message }}</p>  
+                        <a href="{{ url_for('delete_message', index=loop.index0) }}" class="delete-btn">Delete</a>  
+                    </li>  
+                {% endfor %}  
+            </ul>  
+        {% else %}  
+            <p>No messages yet.</p>  
+        {% endif %}  
+    </section>  
+  
+    <!-- Published News Section -->  
+    <section id="published-news">  
+        <h2>Published News</h2>  
+        {% if articles %}  
+            <ul class="news-list">  
+                {% for article in articles %}  
+                    <li>  
+                        <img src="{{ article.image }}" alt="{{ article.title }}" width="150">  
+                        <div>  
+                            <h3>{{ article.title }}</h3>  
+                            <p>{{ article.description }}</p>  
+                            <p>Category: {{ article.category | capitalize }}</p>  
+                        </div>  
+                        <a href="{{ url_for('delete_news', index=loop.index0) }}" class="delete-btn">Delete</a>  
+                    </li>  
+                {% endfor %}  
+            </ul>  
+        {% else %}  
+            <p>No news articles published yet.</p>  
+        {% endif %}  
+    </section>  
+</main>  
+{% endblock %}  

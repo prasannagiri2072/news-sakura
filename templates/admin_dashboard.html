@@ -1,0 +1,207 @@
+<!-- templates/admin_dashboard.html -->  
+{% extends 'base.html' %}  
+{% block title %}Admin Dashboard - Sakura News Network{% endblock %}  
+{% block extra_head %}  
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">  
+{% endblock %}  
+  
+{% block content %}  
+<main class="container admin-main">  
+    <!-- Flash Messages -->  
+    {% with messages = get_flashed_messages(with_categories=true) %}  
+        {% if messages %}  
+            <div class="my-3">  
+                {% for category, message in messages %}  
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">  
+                        {{ message }}  
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>  
+                    </div>  
+                {% endfor %}  
+            </div>  
+        {% endif %}  
+    {% endwith %}  
+  
+    <!-- Admin Dashboard Navigation -->  
+    <div class="mb-4">  
+        <h2 class="mb-3">Admin Dashboard</h2>  
+        <nav>  
+            <ul class="nav nav-tabs" id="adminTab" role="tablist">  
+                <li class="nav-item" role="presentation">  
+                    <button class="nav-link active" id="publish-news-tab" data-bs-toggle="tab" data-bs-target="#publish-news" type="button" role="tab" aria-controls="publish-news" aria-selected="true">Publish News</button>  
+                </li>  
+                <li class="nav-item" role="presentation">  
+                    <button class="nav-link" id="breaking-news-tab" data-bs-toggle="tab" data-bs-target="#breaking-news" type="button" role="tab" aria-controls="breaking-news" aria-selected="false">Manage Breaking News</button>  
+                </li>  
+                <li class="nav-item" role="presentation">  
+                    <button class="nav-link" id="upload-video-tab" data-bs-toggle="tab" data-bs-target="#upload-video" type="button" role="tab" aria-controls="upload-video" aria-selected="false">Upload Video</button>  
+                </li>  
+                <li class="nav-item" role="presentation">  
+                    <button class="nav-link" id="manage-videos-tab" data-bs-toggle="tab" data-bs-target="#manage-videos" type="button" role="tab" aria-controls="manage-videos" aria-selected="false">Manage Videos</button>  
+                </li>  
+                <li class="nav-item" role="presentation">  
+                    <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>  
+                </li>  
+                <li class="nav-item" role="presentation">  
+                    <button class="nav-link" id="published-news-tab" data-bs-toggle="tab" data-bs-target="#published-news" type="button" role="tab" aria-controls="published-news" aria-selected="false">Published News</button>  
+                </li>  
+            </ul>  
+        </nav>  
+    </div>  
+  
+    <div class="tab-content" id="adminTabContent">  
+        <!-- Publish News Section -->  
+        <div class="tab-pane fade show active" id="publish-news" role="tabpanel" aria-labelledby="publish-news-tab">  
+            <h3 class="mt-4">Publish News Article</h3>  
+            <form method="post" action="{{ url_for('admin_action') }}">  
+                <input type="hidden" name="action" value="publish_news">  
+                <div class="mb-3">  
+                    <label for="news-title" class="form-label">News Title</label>  
+                    <input type="text" name="news-title" id="news-title" class="form-control" placeholder="Enter news title" required>  
+                </div>  
+                <div class="mb-3">  
+                    <label for="news-description" class="form-label">News Description</label>  
+                    <textarea name="news-description" id="news-description" class="form-control" rows="5" placeholder="Enter news description" required></textarea>  
+                </div>  
+                <div class="mb-3">  
+                    <label for="news-image" class="form-label">Image URL</label>  
+                    <input type="url" name="news-image" id="news-image" class="form-control" placeholder="Enter image URL" required>  
+                </div>  
+                <div class="mb-3">  
+                    <label for="news-category" class="form-label">Category</label>  
+                    <select name="news-category" id="news-category" class="form-select" required>  
+                        <option value="">Select Category</option>  
+                        <option value="politics">Politics</option>  
+                        <option value="technology">Technology</option>  
+                        <option value="entertainment">Entertainment</option>  
+                        <option value="business">Business</option>  
+                    </select>  
+                </div>  
+                <button type="submit" class="btn btn-primary">Publish News</button>  
+            </form>  
+        </div>  
+  
+        <!-- Breaking News Management -->  
+        <div class="tab-pane fade" id="breaking-news" role="tabpanel" aria-labelledby="breaking-news-tab">  
+            <h3 class="mt-4">Manage Breaking News</h3>  
+            <form method="post" action="{{ url_for('admin_action') }}">  
+                <input type="hidden" name="action" value="update_breaking_news">  
+                <div class="mb-3">  
+                    <label for="breaking-news-text" class="form-label">Breaking News Text</label>  
+                    <input type="text" name="breaking-news-text" id="breaking-news-text" class="form-control" placeholder="Enter breaking news text" required>  
+                </div>  
+                <button type="submit" class="btn btn-primary">Add Breaking News</button>  
+            </form>  
+            {% if breaking_news %}  
+            <ul class="list-group list-group-flush mt-4">  
+                {% for news in breaking_news %}  
+                <li class="list-group-item d-flex justify-content-between align-items-center">  
+                    {{ news }}  
+                    <a href="{{ url_for('delete_breaking_news', index=loop.index0) }}" class="btn btn-sm btn-danger">Delete</a>  
+                </li>  
+                {% endfor %}  
+            </ul>  
+            {% else %}  
+                <p class="mt-4">No breaking news items yet.</p>  
+            {% endif %}  
+        </div>  
+  
+        <!-- Upload Video Section -->  
+        <div class="tab-pane fade" id="upload-video" role="tabpanel" aria-labelledby="upload-video-tab">  
+            <h3 class="mt-4">Upload Video</h3>  
+            <form method="post" action="{{ url_for('admin_action') }}" enctype="multipart/form-data">  
+                <input type="hidden" name="action" value="upload_video">  
+                <div class="mb-3">  
+                    <label for="video-title" class="form-label">Video Title</label>  
+                    <input type="text" name="video-title" id="video-title" class="form-control" placeholder="Enter video title" required>  
+                </div>  
+                <div class="mb-3">  
+                    <label for="video-file" class="form-label">Select Video File</label>  
+                    <input type="file" name="video-file" id="video-file" class="form-control" accept="video/*" required>  
+                </div>  
+                <button type="submit" class="btn btn-primary">Upload Video</button>  
+            </form>  
+        </div>  
+  
+        <!-- Manage Videos Section -->  
+        <div class="tab-pane fade" id="manage-videos" role="tabpanel" aria-labelledby="manage-videos-tab">  
+            <h3 class="mt-4">Manage Videos</h3>  
+            {% if videos %}  
+                <div class="row mt-4">  
+                    {% for video in videos %}  
+                    <div class="col-md-4 mb-4">  
+                        <div class="card">  
+                            <video class="card-img-top" controls>  
+                                <source src="{{ url_for('uploaded_file', filename=video.filename) }}" type="video/mp4">  
+                                Your browser does not support the video tag.  
+                            </video>  
+                            <div class="card-body">  
+                                <h5 class="card-title">{{ video.title }}</h5>  
+                                <p class="text-muted">{{ video.date }}</p>  
+                                <a href="{{ url_for('delete_video', index=videos.index(video)) }}" class="btn btn-sm btn-danger">Delete</a>  
+                            </div>  
+                        </div>  
+                    </div>  
+                    {% endfor %}  
+                </div>  
+            {% else %}  
+                <p class="mt-4">No videos uploaded yet.</p>  
+            {% endif %}  
+        </div>  
+  
+        <!-- Messages Section -->  
+        <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">  
+            <h3 class="mt-4">User Messages</h3>  
+            {% if messages %}  
+                <div class="list-group mt-4">  
+                    {% for message in messages %}  
+                    <div class="list-group-item">  
+                        <h5 class="mb-1">{{ message.name }} (<a href="mailto:{{ message.email }}">{{ message.email }}</a>)</h5>  
+                        <p class="mb-1">{{ message.message }}</p>  
+                        <small>Received on: {{ message.date }}</small>  
+                        <div class="mt-2">  
+                            <a href="{{ url_for('delete_message', index=loop.index0) }}" class="btn btn-sm btn-danger">Delete</a>  
+                        </div>  
+                    </div>  
+                    {% endfor %}  
+                </div>  
+            {% else %}  
+                <p class="mt-4">No messages yet.</p>  
+            {% endif %}  
+        </div>  
+  
+        <!-- Published News Section -->  
+        <div class="tab-pane fade" id="published-news" role="tabpanel" aria-labelledby="published-news-tab">  
+            <h3 class="mt-4">Published News</h3>  
+            {% if articles %}  
+                <div class="table-responsive mt-4">  
+                    <table class="table table-striped table-hover">  
+                        <thead>  
+                            <tr>  
+                                <th>Title</th>  
+                                <th>Category</th>  
+                                <th>Date Published</th>  
+                                <th>Actions</th>  
+                            </tr>  
+                        </thead>  
+                        <tbody>  
+                            {% for article in articles %}  
+                            <tr>  
+                                <td>{{ article.title }}</td>  
+                                <td>{{ article.category | capitalize }}</td>  
+                                <td>{{ article.date }}</td>  
+                                <td>  
+                                    <a href="{{ url_for('news_detail', news_id=articles.index(article)) }}" class="btn btn-sm btn-info">View</a>  
+                                    <a href="{{ url_for('delete_news', index=articles.index(article)) }}" class="btn btn-sm btn-danger">Delete</a>  
+                                </td>  
+                            </tr>  
+                            {% endfor %}  
+                        </tbody>  
+                    </table>  
+                </div>  
+            {% else %}  
+                <p class="mt-4">No news articles published yet.</p>  
+            {% endif %}  
+        </div>  
+    </div>  
+</main>  
+{% endblock %}  

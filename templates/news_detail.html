@@ -1,0 +1,18 @@
+<!-- templates/news_detail.html -->  
+{% extends 'base.html' %}  
+{% block title %}{{ article.title }} - Sakura News Network{% endblock %}  
+  
+{% block content %}  
+<main class="container my-5">  
+    <div class="row">  
+        <div class="col-md-8 offset-md-2">  
+            <h1 class="mb-4">{{ article.title }}</h1>  
+            <img src="{{ article.image }}" class="img-fluid mb-4" alt="{{ article.title }}">  
+            <p class="text-muted" style="color: inherit;">{{ article.date }} | {{ article.category | capitalize }}</p>  
+            <div class="article-content">  
+                <p style="white-space: pre-line; text-align: justify;">{{ article.description }}</p>  
+            </div>  
+        </div>  
+    </div>  
+</main>  
+{% endblock %}  

@@ -1,0 +1,59 @@
+<!-- templates/navbar.html -->  
+<header>  
+    <nav class="navbar navbar-expand-lg" style="background-color: var(--header-bg);">  
+        <div class="container-fluid">  
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">  
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Sakura News Logo" class="navbar-logo">  
+                <h1 class="site-title mb-0 ms-2" data-lang-key="site-title">Sakura News Network</h1>  
+            </a>  
+            <!-- Navbar Toggler placed to the right -->  
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"  
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"  
+                aria-label="Toggle navigation">  
+                <span class="navbar-toggler-icon"></span>  
+            </button>  
+            <!-- Navbar Collapse -->  
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">  
+                <ul class="navbar-nav align-items-center ms-auto">  
+                    <li class="nav-item">  
+                        <a class="nav-link" href="{{ url_for('index') }}" data-lang-key="home">Home</a>  
+                    </li>  
+                    <li class="nav-item">  
+                        <a class="nav-link" href="{{ url_for('about') }}" data-lang-key="about">About</a>  
+                    </li>  
+                    <li class="nav-item">  
+                        <a class="nav-link" href="{{ url_for('contact') }}" data-lang-key="contact">Contact</a>  
+                    </li>  
+                    <li class="nav-item dropdown">  
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button"  
+                            data-bs-toggle="dropdown" aria-expanded="false" data-lang-key="categories">  
+                            Categories  
+                        </a>  
+                        <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">  
+                            <li><a class="dropdown-item" href="{{ url_for('category_page', category_name='politics') }}" data-lang-key="politics">Politics</a></li>  
+                            <li><a class="dropdown-item" href="{{ url_for('category_page', category_name='technology') }}" data-lang-key="technology">Technology</a></li>  
+                            <li><a class="dropdown-item" href="{{ url_for('category_page', category_name='entertainment') }}" data-lang-key="entertainment">Entertainment</a></li>  
+                            <li><a class="dropdown-item" href="{{ url_for('category_page', category_name='business') }}" data-lang-key="business">Business</a></li>  
+                        </ul>  
+                    </li>  
+                    <!-- Language Switcher and Theme Toggle in the same nav-item -->  
+                    <li class="nav-item d-flex align-items-center ms-lg-3">  
+                        <!-- Language Switcher -->  
+                        <select id="language-switcher" class="form-select form-select-sm me-2">  
+                            <option value="en">English</option>  
+                            <option value="np">नेपाली</option>  
+                            <option value="jp">日本語</option>  
+                        </select>  
+                        <!-- Theme Toggle Switch -->  
+                        <div class="theme-switch-wrapper">  
+                            <label class="theme-switch" for="theme-checkbox">  
+                                <input type="checkbox" id="theme-checkbox" />  
+                                <span class="slider round"></span>  
+                            </label>  
+                        </div>  
+                    </li>  
+                </ul>  
+            </div>  
+        </div>  
+    </nav>  
+</header>  
