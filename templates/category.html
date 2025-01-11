@@ -1,0 +1,28 @@
+<!-- templates/category.html -->  
+{% extends 'base.html' %}  
+{% block title %}{{ category_name }} - Sakura News{% endblock %}  
+  
+{% block content %}  
+<main class="container my-5">  
+    <h2>{{ category_name }}</h2>  
+    {% if articles %}  
+    <div class="row">  
+        {% for article in articles %}  
+        <div class="col-md-3">  
+            <div class="card mb-4">  
+                <img src="{{ article.image }}" class="card-img-top" alt="{{ article.title }}">  
+                <div class="card-body">  
+                    <h5 class="card-title">{{ article.title }}</h5>  
+                    <p class="card-text">{{ article.description|truncate(100) }}</p>  
+                    <p class="text-muted">{{ article.date }}</p>  
+                    <a href="{{ url_for('news_detail', news_id=articles.index(article)) }}" class="btn btn-sm btn-primary" data-lang-key="read_more">Read More</a>  
+                </div>  
+            </div>  
+        </div>  
+        {% endfor %}  
+    </div>  
+    {% else %}  
+    <p>No articles found in this category.</p>  
+    {% endif %}  
+</main>  
+{% endblock %}  

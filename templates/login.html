@@ -1,0 +1,38 @@
+<!-- templates/login.html -->  
+{% extends 'base.html' %}  
+{% block title %}Admin Login - Sakura News Network{% endblock %}  
+  
+{% block content %}  
+<main class="container my-5">  
+    <!-- Flash Messages -->  
+    {% with messages = get_flashed_messages(with_categories=true) %}  
+        {% if messages %}  
+            <div class="my-3">  
+                {% for category, message in messages %}  
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">  
+                        {{ message }}  
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>  
+                    </div>  
+                {% endfor %}  
+            </div>  
+        {% endif %}  
+    {% endwith %}  
+  
+    <div class="row justify-content-center">  
+        <div class="col-md-4">  
+            <h2>Admin Login</h2>  
+            <form method="post" action="{{ url_for('login') }}">  
+                <div class="mb-3">  
+                    <label for="username" class="form-label">Username</label>  
+                    <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" required autofocus>  
+                </div>  
+                <div class="mb-3">  
+                    <label for="password" class="form-label">Password</label>  
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required>  
+                </div>  
+                <button type="submit" class="btn btn-primary w-100">Login</button>  
+            </form>  
+        </div>  
+    </div>  
+</main>  
+{% endblock %}  
